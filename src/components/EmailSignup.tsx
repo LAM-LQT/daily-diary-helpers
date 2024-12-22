@@ -29,32 +29,39 @@ const EmailSignup = () => {
             description: "This email is already registered for updates.",
             variant: "destructive",
           });
-          setIsLoading(false);
           return;
         }
         throw supabaseError;
       }
 
       // If no error, proceed with sending welcome email
-      const response = await fetch('/functions/v1/send-welcome-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
+      let welcomeEmailResponse;
+      try {
+        welcomeEmailResponse = await fetch('/functions/v1/send-welcome-email', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email }),
+        });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Welcome email error:', errorData);
-        throw new Error('Failed to send welcome email');
+        if (!welcomeEmailResponse.ok) {
+          console.error('Welcome email error status:', welcomeEmailResponse.status);
+          throw new Error('Failed to send welcome email');
+        }
+
+        toast({
+          title: "Thanks for signing up!",
+          description: "We've sent you a confirmation email.",
+        });
+        setEmail("");
+      } catch (emailError) {
+        console.error('Welcome email error:', emailError);
+        toast({
+          title: "Signed up successfully",
+          description: "You're subscribed, but we couldn't send the welcome email. You'll still receive our updates!",
+        });
       }
-
-      toast({
-        title: "Thanks for signing up!",
-        description: "We've sent you a confirmation email.",
-      });
-      setEmail("");
     } catch (error) {
       console.error('Error in email signup:', error);
       toast({
