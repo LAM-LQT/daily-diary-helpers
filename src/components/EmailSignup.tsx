@@ -16,31 +16,37 @@ const EmailSignup = () => {
     try {
       console.log("Attempting to save email:", email);
       
-      // First, try to save to Supabase
-      const { error: supabaseError } = await supabase
+      // First check if email already exists
+      const { data: existingSubscriber } = await supabase
+        .from('newsletter_subscribers')
+        .select('email')
+        .eq('email', email)
+        .single();
+
+      if (existingSubscriber) {
+        console.log("Email already exists:", email);
+        toast({
+          title: "Already subscribed",
+          description: "This email is already registered for updates.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      // If email doesn't exist, proceed with insertion
+      const { error: insertError } = await supabase
         .from('newsletter_subscribers')
         .insert([{ email }]);
 
-      // Check for duplicate email error
-      if (supabaseError) {
-        console.log("Supabase error:", supabaseError);
-        
-        if (supabaseError.code === '23505') {
-          toast({
-            title: "Already subscribed",
-            description: "This email is already registered for updates.",
-            variant: "destructive",
-          });
-          setIsLoading(false);
-          return;
-        }
-        throw supabaseError;
+      if (insertError) {
+        console.error("Error inserting email:", insertError);
+        throw insertError;
       }
 
-      // If no error, proceed with sending welcome email
-      let welcomeEmailResponse;
+      // If successful, try to send welcome email
       try {
-        welcomeEmailResponse = await fetch('/functions/v1/send-welcome-email', {
+        const welcomeEmailResponse = await fetch('/functions/v1/send-welcome-email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
