@@ -14,6 +14,8 @@ const EmailSignup = () => {
     setIsLoading(true);
 
     try {
+      console.log("Attempting to save email:", email);
+      
       // First, try to save to Supabase
       const { error: supabaseError } = await supabase
         .from('newsletter_subscribers')
@@ -29,6 +31,7 @@ const EmailSignup = () => {
             description: "This email is already registered for updates.",
             variant: "destructive",
           });
+          setIsLoading(false);
           return;
         }
         throw supabaseError;
