@@ -15,13 +15,15 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
+    console.log("Received request to send welcome email");
     const { email } = await req.json();
-    
-    // Generate unsubscribe token (simple hash of email + timestamp)
-    const unsubscribeToken = btoa(`${email}-${Date.now()}`);
-    
     console.log("Sending welcome email to:", email);
-    
+
+    if (!RESEND_API_KEY) {
+      console.error("RESEND_API_KEY is not set");
+      throw new Error("Missing RESEND_API_KEY");
+    }
+
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -40,7 +42,7 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="color: #4b5563; line-height: 1.6;">You'll receive our latest updates and news directly to your inbox.</p>
               <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
                 <p style="color: #6b7280; font-size: 0.875rem;">
-                  If you wish to unsubscribe, <a href="https://your-app-url/unsubscribe?token=${unsubscribeToken}" style="color: #6366f1; text-decoration: underline;">click here</a>
+                  If you wish to unsubscribe, you can do so by clicking the unsubscribe link in our emails.
                 </p>
               </div>
             </div>
@@ -60,12 +62,13 @@ const handler = async (req: Request): Promise<Response> => {
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
+      status: 200,
     });
   } catch (error) {
     console.error("Error in send-welcome-email function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      { 
+      {
         status: 500,
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
