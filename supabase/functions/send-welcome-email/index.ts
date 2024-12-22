@@ -9,6 +9,7 @@ const corsHeaders = {
 };
 
 const handler = async (req: Request): Promise<Response> => {
+  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
@@ -19,6 +20,8 @@ const handler = async (req: Request): Promise<Response> => {
     // Generate unsubscribe token (simple hash of email + timestamp)
     const unsubscribeToken = btoa(`${email}-${Date.now()}`);
     
+    console.log("Sending welcome email to:", email);
+    
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -26,13 +29,13 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "Thanks Everyday <onboarding@resend.dev>",
+        from: "AI Diary <onboarding@resend.dev>",
         to: [email],
-        subject: "Welcome to Thanks Everyday!",
+        subject: "Welcome to AI Diary!",
         html: `
           <div style="background-color: #f8f9ff; padding: 20px; font-family: Arial, sans-serif;">
             <div style="max-width: 600px; margin: 0 auto; background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-              <h1 style="color: #6366f1; margin-bottom: 20px;">Welcome to Thanks Everyday!</h1>
+              <h1 style="color: #6366f1; margin-bottom: 20px;">Welcome to AI Diary!</h1>
               <p style="color: #4b5563; line-height: 1.6;">Thank you for subscribing to our newsletter! We're excited to share updates and insights with you.</p>
               <p style="color: #4b5563; line-height: 1.6;">You'll receive our latest updates and news directly to your inbox.</p>
               <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
@@ -47,13 +50,19 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     if (!res.ok) {
-      throw new Error(`Failed to send email: ${await res.text()}`);
+      const errorText = await res.text();
+      console.error("Resend API error:", errorText);
+      throw new Error(`Failed to send email: ${errorText}`);
     }
 
-    return new Response(JSON.stringify({ success: true }), {
+    const data = await res.json();
+    console.log("Email sent successfully:", data);
+
+    return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
+    console.error("Error in send-welcome-email function:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
       { 
