@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const EmailSignup = () => {
@@ -14,25 +14,28 @@ const EmailSignup = () => {
     setIsLoading(true);
 
     try {
-      // First, save to Supabase
-      const { error } = await supabase
+      // First, try to save to Supabase
+      const { error: supabaseError } = await supabase
         .from('newsletter_subscribers')
         .insert([{ email }]);
 
-      if (error) {
-        if (error.code === '23505') { // Unique violation error code
+      // Check for duplicate email error
+      if (supabaseError) {
+        console.log("Supabase error:", supabaseError);
+        
+        if (supabaseError.code === '23505') {
           toast({
             title: "Already subscribed",
             description: "This email is already registered for updates.",
             variant: "destructive",
           });
+          setIsLoading(false);
           return;
-        } else {
-          throw error;
         }
+        throw supabaseError;
       }
 
-      // Then, send welcome email
+      // If no error, proceed with sending welcome email
       const response = await fetch('/functions/v1/send-welcome-email', {
         method: 'POST',
         headers: {
@@ -42,6 +45,8 @@ const EmailSignup = () => {
       });
 
       if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Welcome email error:', errorData);
         throw new Error('Failed to send welcome email');
       }
 
