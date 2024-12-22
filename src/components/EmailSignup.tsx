@@ -16,12 +16,12 @@ const EmailSignup = () => {
     try {
       console.log("Attempting to save email:", email);
       
-      // First check if email already exists
+      // First check if email already exists using maybeSingle()
       const { data: existingSubscriber } = await supabase
         .from('newsletter_subscribers')
         .select('email')
         .eq('email', email)
-        .single();
+        .maybeSingle();
 
       if (existingSubscriber) {
         console.log("Email already exists:", email);
@@ -46,24 +46,20 @@ const EmailSignup = () => {
 
       // If successful, try to send welcome email
       try {
-        const welcomeEmailResponse = await fetch('/functions/v1/send-welcome-email', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ email }),
+        const welcomeEmailResponse = await supabase.functions.invoke('send-welcome-email', {
+          body: { email }
         });
 
-        if (!welcomeEmailResponse.ok) {
-          console.error('Welcome email error status:', welcomeEmailResponse.status);
+        if (!welcomeEmailResponse.error) {
+          toast({
+            title: "Thanks for signing up!",
+            description: "We've sent you a confirmation email.",
+          });
+          setEmail("");
+        } else {
+          console.error('Welcome email error:', welcomeEmailResponse.error);
           throw new Error('Failed to send welcome email');
         }
-
-        toast({
-          title: "Thanks for signing up!",
-          description: "We've sent you a confirmation email.",
-        });
-        setEmail("");
       } catch (emailError) {
         console.error('Welcome email error:', emailError);
         toast({
