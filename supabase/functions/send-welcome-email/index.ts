@@ -24,6 +24,7 @@ const handler = async (req: Request): Promise<Response> => {
       throw new Error("Missing RESEND_API_KEY");
     }
 
+    // During development/testing, we'll use the default Resend testing domain
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -31,7 +32,7 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "AI Diary <onboarding@resend.dev>",
+        from: "onboarding@resend.dev",
         to: [email],
         subject: "Welcome to AI Diary!",
         html: `
