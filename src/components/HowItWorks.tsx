@@ -1,33 +1,29 @@
-import { Sparkles } from "lucide-react";
-
 const steps = [
   {
     number: "01",
-    title: "Begin Your Journey",
-    description: "Create your personal space for gratitude and reflection in seconds.",
+    title: "Sign Up",
+    description: "Create your account in seconds and get started with your digital diary journey.",
   },
   {
     number: "02",
-    title: "Daily Reflection",
-    description: "Take a moment each day to appreciate life's beautiful moments.",
+    title: "Write Daily",
+    description: "Express your thoughts, feelings, and experiences in your personal digital space.",
   },
   {
     number: "03",
-    title: "Grow & Transform",
-    description: "Watch as gratitude shapes your perspective and enriches your life.",
+    title: "Get Insights",
+    description: "Receive AI-powered insights about your emotional patterns and personal growth.",
   },
 ];
 
 const HowItWorks = () => {
   return (
-    <div id="how-it-works" className="py-16 bg-gradient-to-b from-[#F1F0FB] to-white">
+    <div id="how-it-works" className="py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h2 className="text-3xl font-extrabold sm:text-4xl bg-gradient-to-r from-purple-600 to-rose-600 bg-clip-text text-transparent inline-flex items-center gap-2">
-            Your Journey to Gratitude <Sparkles className="h-8 w-8 text-rose-500" />
-          </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-600">
-            Three simple steps to transform your daily perspective
+          <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">How It Works</h2>
+          <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-500">
+            Start your journey in three simple steps
           </p>
         </div>
 
@@ -36,18 +32,11 @@ const HowItWorks = () => {
             {steps.map((step) => (
               <div
                 key={step.number}
-                className="relative group"
+                className="relative p-8 bg-white rounded-lg shadow-lg hover:shadow-xl transition-shadow"
               >
-                <div className="relative bg-white rounded-2xl p-8 shadow-lg transition-all duration-300 hover:shadow-xl transform hover:-translate-y-1">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-rose-400 opacity-5 rounded-2xl transition-opacity group-hover:opacity-10" />
-                  <div className="relative">
-                    <div className="text-transparent bg-gradient-to-r from-purple-400 to-rose-400 bg-clip-text text-5xl font-bold mb-4">
-                      {step.number}
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-900 mb-4">{step.title}</h3>
-                    <p className="text-gray-600">{step.description}</p>
-                  </div>
-                </div>
+                <div className="text-purple-700 text-5xl font-bold mb-4">{step.number}</div>
+                <h3 className="text-xl font-medium text-gray-900 mb-4">{step.title}</h3>
+                <p className="text-gray-500">{step.description}</p>
               </div>
             ))}
           </div>
