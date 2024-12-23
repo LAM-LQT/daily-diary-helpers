@@ -25,6 +25,9 @@ const handler = async (req: Request): Promise<Response> => {
     }
 
     // During development/testing, we'll use the default Resend testing domain
+    // and only send to the verified email address
+    const verifiedEmail = "lamquangthinh.lqt@gmail.com"; // Your verified email
+    
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -33,7 +36,7 @@ const handler = async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         from: "onboarding@resend.dev",
-        to: [email],
+        to: [verifiedEmail], // Only send to verified email during testing
         subject: "Welcome to AI Diary!",
         html: `
           <div style="background-color: #f8f9ff; padding: 20px; font-family: Arial, sans-serif;">
