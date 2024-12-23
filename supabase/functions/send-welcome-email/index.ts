@@ -23,10 +23,6 @@ const handler = async (req: Request): Promise<Response> => {
       console.error("RESEND_API_KEY is not set");
       throw new Error("Missing RESEND_API_KEY");
     }
-
-    // During development/testing, we'll use the default Resend testing domain
-    // and only send to the verified email address
-    const verifiedEmail = "lamquangthinh.lqt@gmail.com"; // Your verified email
     
     const res = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -35,8 +31,8 @@ const handler = async (req: Request): Promise<Response> => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "onboarding@resend.dev",
-        to: [verifiedEmail], // Only send to verified email during testing
+        from: "lamquangthinh.lqt@gmail.com",
+        to: [email], // Send to the user's input email
         subject: "Welcome to AI Diary!",
         html: `
           <div style="background-color: #f8f9ff; padding: 20px; font-family: Arial, sans-serif;">
