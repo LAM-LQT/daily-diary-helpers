@@ -81,16 +81,16 @@ const EmailSignup = () => {
   };
 
   return (
-    <div id="contact" className="py-16 bg-gradient-to-b from-secondary to-background">
+    <div id="contact" className="py-16 bg-gradient-to-b from-[#F1F0FB] to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <div className="flex justify-center mb-4">
-            <HeartHandshake className="h-12 w-12 text-primary" />
+            <HeartHandshake className="h-12 w-12 text-rose-500" />
           </div>
-          <h2 className="text-3xl font-extrabold sm:text-4xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+          <h2 className="text-3xl font-extrabold sm:text-4xl bg-gradient-to-r from-purple-600 to-rose-600 bg-clip-text text-transparent">
             Join Our Gratitude Community
           </h2>
-          <p className="mt-4 max-w-2xl mx-auto text-xl text-muted-foreground">
+          <p className="mt-4 max-w-2xl mx-auto text-xl text-gray-600">
             Be part of a community that celebrates daily moments of appreciation.
           </p>
         </div>
@@ -104,12 +104,12 @@ const EmailSignup = () => {
               placeholder="Enter your email"
               required
               disabled={isLoading}
-              className="w-full px-5 py-3 text-base text-foreground placeholder-muted-foreground border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent shadow-sm"
+              className="w-full px-5 py-3 text-base text-gray-900 placeholder-gray-500 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-400 focus:border-transparent shadow-sm"
             />
             <div className="mt-3 sm:mt-0 sm:ml-3">
               <Button 
                 type="submit" 
-                className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-primary-foreground font-medium shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full bg-gradient-to-r from-rose-400 to-purple-600 hover:from-rose-500 hover:to-purple-700 text-white font-medium shadow-lg hover:shadow-xl transition-all duration-300"
                 disabled={isLoading}
               >
                 {isLoading ? "Joining..." : "Join Now"}
