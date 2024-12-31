@@ -23,11 +23,11 @@ const Hero = () => {
 
   return (
     <div className="relative min-h-[100vh] overflow-hidden">
-      {/* Fallback background gradient for when Spline is not loaded */}
+      {/* Fallback background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-800 -z-10" />
       
       {/* Spline 3D background */}
-      <div className="absolute inset-0 -z-10">
+      <div className="h-[60vh] relative">
         {/* @ts-ignore */}
         <spline-viewer 
           url="https://prod.spline.design/XLVlDNrxYqLN7lVG/scene.splinecode"
@@ -37,7 +37,7 @@ const Hero = () => {
       </div>
 
       {/* Hero content */}
-      <div className="relative pt-20 pb-16 sm:pt-24 sm:pb-20">
+      <div className="relative py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
