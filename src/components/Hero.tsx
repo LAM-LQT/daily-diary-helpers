@@ -27,17 +27,18 @@ const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-800 -z-10" />
       
       {/* Spline 3D background */}
-      <div className="h-[60vh] relative">
+      <div className="h-screen w-full relative">
         {/* @ts-ignore */}
         <spline-viewer 
-          url="https://prod.spline.design/XLVlDNrxYqLN7lVG/scene.splinecode"
+          url="https://prod.spline.design/NfYaXiwjsWqNBlJQ/scene.splinecode"
           loading-anim
           events-target="global"
+          className="w-full h-full"
         />
       </div>
 
       {/* Hero content */}
-      <div className="relative py-16">
+      <div className="relative py-16 mt-[-100px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
