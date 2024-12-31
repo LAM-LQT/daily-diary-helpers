@@ -7,7 +7,9 @@ const Hero = () => {
   useEffect(() => {
     // Check if Spline viewer is loaded
     const checkSplineLoaded = () => {
-      if (customElements.get('spline-viewer')) {
+      const splineViewerDefined = customElements.get('spline-viewer');
+      console.log('Spline viewer loaded:', splineViewerDefined ? 'yes' : 'no');
+      if (splineViewerDefined) {
         setIsSplineLoaded(true);
       }
     };
@@ -22,10 +24,11 @@ const Hero = () => {
   return (
     <div className="relative min-h-[100vh] overflow-hidden">
       {/* Fallback background gradient for when Spline is not loaded */}
-      <div className="absolute inset-0 bg-gradient-to-b from-green-50 to-green-100 -z-10" />
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 to-gray-800 -z-10" />
       
       {/* Spline 3D background */}
       <div className="absolute inset-0 -z-10">
+        {/* @ts-ignore */}
         <spline-viewer 
           url="https://prod.spline.design/XLVlDNrxYqLN7lVG/scene.splinecode"
           loading-anim
@@ -38,15 +41,15 @@ const Hero = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="lg:grid lg:grid-cols-12 lg:gap-8">
             <div className="sm:text-center md:max-w-2xl md:mx-auto lg:col-span-6 lg:text-left">
-              <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+              <h1 className="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl">
                 <span className="block">Your Personal</span>
-                <span className="block text-green-600">AI-Powered Diary</span>
+                <span className="block text-emerald-400">AI-Powered Diary</span>
               </h1>
-              <p className="mt-3 text-base text-gray-600 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
+              <p className="mt-3 text-base text-gray-300 sm:mt-5 sm:text-xl lg:text-lg xl:text-xl">
                 Transform your daily journaling with AI insights. Capture your thoughts, track your growth, and discover patterns in your personal journey.
               </p>
               <div className="mt-8 sm:max-w-lg sm:mx-auto sm:text-center lg:text-left">
-                <Button className="w-full sm:w-auto bg-green-500 hover:bg-green-600 text-lg px-8 py-6">
+                <Button className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-lg px-8 py-6">
                   Start Your Journey
                 </Button>
               </div>
